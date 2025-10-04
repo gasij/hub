@@ -1,0 +1,84 @@
+### Тестирование API системы управления заявками
+
+### 1. Регистрация нового пользователя
+POST https://localhost:7000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "newstudent@university.ru",
+  "password": "password123",
+  "firstName": "Алексей",
+  "lastName": "Новиков",
+  "patronymic": "Иванович",
+  "role": "student",
+  "groupName": "ИТ-24"
+}
+
+### 2. Вход в систему (администратор)
+POST https://localhost:7000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@university.ru",
+  "password": "admin123"
+}
+
+### 3. Вход в систему (студент)
+POST https://localhost:7000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "student1@university.ru",
+  "password": "student123"
+}
+
+### 4. Получение всех заявок (требует авторизации)
+GET https://localhost:7000/api/tickets
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 5. Создание новой заявки (требует авторизации)
+POST https://localhost:7000/api/tickets
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "title": "Проблема с доступом к Wi-Fi",
+  "description": "Не могу подключиться к университетской сети Wi-Fi в аудитории 101"
+}
+
+### 6. Получение конкретной заявки (требует авторизации)
+GET https://localhost:7000/api/tickets/{ticket-id}
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 7. Обновление статуса заявки (только для администраторов)
+PATCH https://localhost:7000/api/tickets/{ticket-id}/status
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "status": "in_progress"
+}
+
+### 8. Поиск пользователей (только для администраторов)
+GET https://localhost:7000/api/users/search?searchTerm=Иван
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 9. Поиск пользователей по фамилии
+GET https://localhost:7000/api/users/search?searchTerm=Петров
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 10. Поиск пользователей по отчеству
+GET https://localhost:7000/api/users/search?searchTerm=Сергеевич
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### Примеры статусов заявок:
+# new - новая заявка
+# in_progress - в работе
+# resolved - решена
+# rejected - отклонена
+# closed - закрыта
+
+### Примеры ролей пользователей:
+# student - студент
+# admin - администратор
+# teacher - преподаватель (если нужно)
