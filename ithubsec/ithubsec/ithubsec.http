@@ -1,0 +1,6 @@
+@ithubsec_HostAddress = http://localhost:5150
+
+GET {{ithubsec_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
