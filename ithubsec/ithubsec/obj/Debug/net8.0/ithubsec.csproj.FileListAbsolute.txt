@@ -114,3 +114,4 @@ C:\desckowerviev\hubd\ithubsec\ithubsec\obj\Debug\net8.0\ithubsec.pdb
 C:\desckowerviev\hubd\ithubsec\ithubsec\obj\Debug\net8.0\ithubsec.genruntimeconfig.cache
 C:\desckowerviev\hubd\ithubsec\ithubsec\obj\Debug\net8.0\ref\ithubsec.dll
 C:\desckowerviev\hubd\ithubsec\ithubsec\bin\Debug\net8.0\ithubsec.staticwebassets.runtime.json
+C:\desckowerviev\hubd\ithubsec\ithubsec\obj\Debug\net8.0\ithubsec.sourcelink.json

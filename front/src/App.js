@@ -11,6 +11,9 @@ import TicketDetails from './components/TicketDetails';
 import HomePage from './components/HomePage';
 import UserManagement from './components/UserManagement';
 import Profile from './components/Profile';
+import SimpleAnimatedBackground from './components/SimpleAnimatedBackground';
+import CursorTrail from './components/CursorTrail';
+import LogoBackground from './components/LogoBackground';
 import './App.css';
 
 function App() {
@@ -18,6 +21,9 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="App">
+          <SimpleAnimatedBackground />
+          <LogoBackground />
+          <CursorTrail />
           <Navbar />
           <Routes>
             <Route path="/login" element={<Login />} />

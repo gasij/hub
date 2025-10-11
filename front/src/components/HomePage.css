@@ -2,7 +2,36 @@
   min-height: 100vh;
   background: transparent;
   position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
+
+.homepage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%);
+  animation: homepageGlow 8s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes homepageGlow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Убрали фоновые частицы */
 
 .hero-section {
   display: flex;
@@ -14,6 +43,23 @@
   color: white;
   position: relative;
   z-index: 1;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(255, 119, 198, 0.1) 0%, transparent 50%);
+  animation: heroGlow 8s ease-in-out infinite;
+}
+
+@keyframes heroGlow {
+  0%, 100% {
+    background: 
+      radial-gradient(circle at 30% 20%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(255, 119, 198, 0.1) 0%, transparent 50%);
+  }
+  50% {
+    background: 
+      radial-gradient(circle at 70% 20%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 30% 80%, rgba(255, 119, 198, 0.15) 0%, transparent 50%);
+  }
 }
 
 .hero-content {
@@ -88,6 +134,16 @@
   border: 2px solid transparent;
   position: relative;
   overflow: hidden;
+  animation: buttonPulse 4s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+  }
 }
 
 .btn-primary::before {
@@ -97,8 +153,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
 }
 
 .btn-primary:hover::before {
@@ -106,20 +162,62 @@
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+  border-color: rgba(255, 255, 255, 0.4);
+  animation: none;
+}
+
+.btn-primary:active {
+  transform: translateY(-1px) scale(1.02);
 }
 
 .btn-secondary {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  animation: buttonGlow 3s ease-in-out infinite;
+}
+
+@keyframes buttonGlow {
+  0%, 100% {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-secondary:hover::before {
+  left: 100%;
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(255, 255, 255, 0.3);
+  animation: none;
+}
+
+.btn-secondary:active {
+  transform: translateY(-1px) scale(1.02);
 }
 
 .btn-outline {
@@ -178,6 +276,18 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .feature-card::before {

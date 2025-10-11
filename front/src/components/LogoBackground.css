@@ -1,0 +1,72 @@
+.logo-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -2;
+  background: transparent;
+  opacity: 0.1;
+}
+
+/* Дополнительные эффекты для логотипа */
+.logo-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.01) 0%, transparent 50%);
+  animation: logoGlow 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes logoGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  33% {
+    opacity: 0.5;
+    transform: scale(1.02) rotate(0.5deg);
+  }
+  66% {
+    opacity: 0.4;
+    transform: scale(0.98) rotate(-0.5deg);
+  }
+}
+
+/* Эффект мерцания для логотипа */
+.logo-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.01) 50%, transparent 70%),
+    linear-gradient(-45deg, transparent 30%, rgba(255, 255, 255, 0.01) 50%, transparent 70%);
+  background-size: 300px 300px;
+  animation: logoShimmer 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes logoShimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(360deg);
+    opacity: 0.3;
+  }
+}

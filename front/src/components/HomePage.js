@@ -74,36 +74,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="features-section">
-        <div className="container">
-          <h2 className="features-title">Возможности системы</h2>
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">📝</div>
-              <h3>Создание заявок</h3>
-              <p>Подавайте заявки на решение различных вопросов и проблем</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">📊</div>
-              <h3>Отслеживание статуса</h3>
-              <p>Следите за статусом ваших заявок в реальном времени</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">👥</div>
-              <h3>Управление пользователями</h3>
-              <p>Администраторы могут управлять заявками всех пользователей</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">🔒</div>
-              <h3>Безопасность</h3>
-              <p>Надежная система аутентификации и авторизации</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="cta-section">
         <div className="container">
