@@ -28,6 +28,7 @@ namespace ithubsec.DTOs
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public UserDto Author { get; set; } = null!;
+        public List<MessageDto> Messages { get; set; } = new List<MessageDto>();
     }
 
     public class UserSearchDto
@@ -86,6 +87,26 @@ namespace ithubsec.DTOs
 
         [StringLength(20)]
         public string? GroupName { get; set; }
+    }
+
+    public class CreateMessageRequest
+    {
+        [Required]
+        public Guid TicketId { get; set; }
+
+        [Required]
+        [MaxLength(2000)]
+        public string Content { get; set; } = string.Empty;
+    }
+
+    public class MessageDto
+    {
+        public Guid Id { get; set; }
+        public Guid TicketId { get; set; }
+        public Guid AuthorId { get; set; }
+        public string Content { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+        public UserDto Author { get; set; } = null!;
     }
 
 }

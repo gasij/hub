@@ -40,5 +40,28 @@ export const ticketService = {
     } catch (error) {
       throw error.response?.data || error;
     }
+  },
+
+  // Получение сообщений заявки
+  async getMessages(ticketId) {
+    try {
+      const response = await api.get(`/tickets/${ticketId}/messages`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  // Добавление сообщения к заявке
+  async addMessage(ticketId, content) {
+    try {
+      const response = await api.post(`/tickets/${ticketId}/messages`, {
+        ticketId,
+        content
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
   }
 };

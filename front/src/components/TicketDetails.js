@@ -13,6 +13,9 @@ const TicketDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [sendingMessage, setSendingMessage] = useState(false);
 
   useEffect(() => {
     loadTicket();
@@ -23,6 +26,7 @@ const TicketDetails = () => {
       setLoading(true);
       const data = await ticketService.getTicket(id);
       setTicket(data);
+      setMessages(data.messages || []);
     } catch (err) {
       setError('Ошибка загрузки заявки');
       console.error('Error loading ticket:', err);
@@ -43,6 +47,23 @@ const TicketDetails = () => {
       alert('Ошибка обновления статуса заявки');
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) return;
+
+    try {
+      setSendingMessage(true);
+      const message = await ticketService.addMessage(id, newMessage.trim());
+      setMessages(prev => [...prev, message]);
+      setNewMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Ошибка отправки сообщения');
+    } finally {
+      setSendingMessage(false);
     }
   };
 
@@ -84,6 +105,16 @@ const TicketDetails = () => {
       parts.push(author.patronymic);
     }
     return parts.join(' ');
+  };
+
+  const formatMessageTime = (dateString) => {
+    return new Date(dateString).toLocaleString('ru-RU', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   if (loading) {
@@ -157,6 +188,48 @@ const TicketDetails = () => {
           <div className="ticket-description">
             <h3>Описание</h3>
             <p>{ticket.description}</p>
+          </div>
+
+          {/* Секция сообщений */}
+          <div className="messages-section">
+            <h3>Сообщения ({messages.length})</h3>
+            
+            {messages.length > 0 ? (
+              <div className="messages-list">
+                {messages.map((message) => (
+                  <div key={message.id} className={`message ${message.authorId === user?.id ? 'own-message' : 'other-message'}`}>
+                    <div className="message-header">
+                      <span className="message-author">{getAuthorName(message.author)}</span>
+                      <span className="message-time">{formatMessageTime(message.createdAt)}</span>
+                    </div>
+                    <div className="message-content">{message.content}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="no-messages">Пока нет сообщений</div>
+            )}
+
+            {/* Форма для отправки сообщения */}
+            <form onSubmit={handleSendMessage} className="message-form">
+              <div className="message-input-group">
+                <textarea
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Введите ваше сообщение..."
+                  className="message-textarea"
+                  rows="3"
+                  disabled={sendingMessage}
+                />
+                <button
+                  type="submit"
+                  disabled={!newMessage.trim() || sendingMessage}
+                  className="send-message-btn"
+                >
+                  {sendingMessage ? 'Отправка...' : 'Отправить'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

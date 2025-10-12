@@ -77,6 +77,8 @@ namespace ithubsec.Controllers
 
             var ticket = await _context.Tickets
                 .Include(t => t.Author)
+                .Include(t => t.Messages)
+                    .ThenInclude(m => m.Author)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             if (ticket == null)
@@ -109,7 +111,26 @@ namespace ithubsec.Controllers
                     Role = ticket.Author.Role,
                     GroupName = ticket.Author.GroupName,
                     CreatedAt = ticket.Author.CreatedAt
-                }
+                },
+                Messages = ticket.Messages.OrderBy(m => m.CreatedAt).Select(m => new MessageDto
+                {
+                    Id = m.Id,
+                    TicketId = m.TicketId,
+                    AuthorId = m.AuthorId,
+                    Content = m.Content,
+                    CreatedAt = m.CreatedAt,
+                    Author = new UserDto
+                    {
+                        Id = m.Author.Id,
+                        Email = m.Author.Email,
+                        FirstName = m.Author.FirstName,
+                        LastName = m.Author.LastName,
+                        Patronymic = m.Author.Patronymic,
+                        Role = m.Author.Role,
+                        GroupName = m.Author.GroupName,
+                        CreatedAt = m.Author.CreatedAt
+                    }
+                }).ToList()
             };
 
             return Ok(ticketDto);
@@ -209,6 +230,115 @@ namespace ithubsec.Controllers
             };
 
             return Ok(ticketDto);
+        }
+
+        [HttpPost("{id}/messages")]
+        public async Task<ActionResult<MessageDto>> AddMessage(Guid id, CreateMessageRequest request)
+        {
+            var userId = GetCurrentUserId();
+            var userRole = GetCurrentUserRole();
+
+            // Проверяем существование заявки
+            var ticket = await _context.Tickets
+                .Include(t => t.Author)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            // Проверяем права доступа
+            if (userRole != "admin" && ticket.AuthorId != userId)
+            {
+                return Forbid();
+            }
+
+            var message = new Message
+            {
+                TicketId = id,
+                AuthorId = userId,
+                Content = request.Content
+            };
+
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+
+            // Загружаем автора для ответа
+            await _context.Entry(message)
+                .Reference(m => m.Author)
+                .LoadAsync();
+
+            var messageDto = new MessageDto
+            {
+                Id = message.Id,
+                TicketId = message.TicketId,
+                AuthorId = message.AuthorId,
+                Content = message.Content,
+                CreatedAt = message.CreatedAt,
+                Author = new UserDto
+                {
+                    Id = message.Author.Id,
+                    Email = message.Author.Email,
+                    FirstName = message.Author.FirstName,
+                    LastName = message.Author.LastName,
+                    Patronymic = message.Author.Patronymic,
+                    Role = message.Author.Role,
+                    GroupName = message.Author.GroupName,
+                    CreatedAt = message.Author.CreatedAt
+                }
+            };
+
+            return CreatedAtAction(nameof(GetTicket), new { id = ticket.Id }, messageDto);
+        }
+
+        [HttpGet("{id}/messages")]
+        public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessages(Guid id)
+        {
+            var userId = GetCurrentUserId();
+            var userRole = GetCurrentUserRole();
+
+            // Проверяем существование заявки
+            var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            // Проверяем права доступа
+            if (userRole != "admin" && ticket.AuthorId != userId)
+            {
+                return Forbid();
+            }
+
+            var messages = await _context.Messages
+                .Include(m => m.Author)
+                .Where(m => m.TicketId == id)
+                .OrderBy(m => m.CreatedAt)
+                .ToListAsync();
+
+            var messageDtos = messages.Select(m => new MessageDto
+            {
+                Id = m.Id,
+                TicketId = m.TicketId,
+                AuthorId = m.AuthorId,
+                Content = m.Content,
+                CreatedAt = m.CreatedAt,
+                Author = new UserDto
+                {
+                    Id = m.Author.Id,
+                    Email = m.Author.Email,
+                    FirstName = m.Author.FirstName,
+                    LastName = m.Author.LastName,
+                    Patronymic = m.Author.Patronymic,
+                    Role = m.Author.Role,
+                    GroupName = m.Author.GroupName,
+                    CreatedAt = m.Author.CreatedAt
+                }
+            });
+
+            return Ok(messageDtos);
         }
 
         private Guid GetCurrentUserId()

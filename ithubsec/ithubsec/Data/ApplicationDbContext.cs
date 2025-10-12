@@ -11,6 +11,7 @@ namespace ithubsec.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,12 +42,33 @@ namespace ithubsec.Data
             modelBuilder.Entity<Ticket>()
                 .HasIndex(t => t.CreatedAt);
 
+            modelBuilder.Entity<Message>()
+                .HasIndex(m => m.TicketId);
+
+            modelBuilder.Entity<Message>()
+                .HasIndex(m => m.AuthorId);
+
+            modelBuilder.Entity<Message>()
+                .HasIndex(m => m.CreatedAt);
+
             // Настройка связей
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Author)
                 .WithMany(u => u.Tickets)
                 .HasForeignKey(t => t.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Ticket)
+                .WithMany(t => t.Messages)
+                .HasForeignKey(m => m.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Author)
+                .WithMany()
+                .HasForeignKey(m => m.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Настройка ограничений
             modelBuilder.Entity<User>()

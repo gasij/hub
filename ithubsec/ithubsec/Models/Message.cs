@@ -3,32 +3,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ithubsec.Models
 {
-    public class Ticket
+    public class Message
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
+        public Guid TicketId { get; set; }
+
+        [Required]
         public Guid AuthorId { get; set; }
 
         [Required]
-        [MaxLength(200)]
-        public string Title { get; set; } = string.Empty;
-
-        [Required]
-        public string Description { get; set; } = string.Empty;
-
-        [Required]
-        [MaxLength(20)]
-        public string Status { get; set; } = "new";
+        public string Content { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Навигационные свойства
+        [ForeignKey("TicketId")]
+        public virtual Ticket Ticket { get; set; } = null!;
+
         [ForeignKey("AuthorId")]
         public virtual User Author { get; set; } = null!;
-
-        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
     }
 }
