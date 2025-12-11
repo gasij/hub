@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ithubsec.Data;
 using ithubsec.DTOs;
 using ithubsec.Models;
+using ithubsec.Services;
 using System.Security.Claims;
 
 namespace ithubsec.Controllers
@@ -14,10 +15,12 @@ namespace ithubsec.Controllers
     public class TicketsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDocumentService _documentService;
 
-        public TicketsController(ApplicationDbContext context)
+        public TicketsController(ApplicationDbContext context, IDocumentService documentService)
         {
             _context = context;
+            _documentService = documentService;
         }
 
         [HttpGet]
@@ -79,6 +82,8 @@ namespace ithubsec.Controllers
                 .Include(t => t.Author)
                 .Include(t => t.Messages)
                     .ThenInclude(m => m.Author)
+                .Include(t => t.Messages)
+                    .ThenInclude(m => m.Document)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             if (ticket == null)
@@ -90,6 +95,33 @@ namespace ithubsec.Controllers
             if (userRole != "admin" && ticket.AuthorId != userId)
             {
                 return Forbid();
+            }
+
+            var messagesDto = ticket.Messages.OrderBy(m => m.CreatedAt).Select(m => new MessageDto
+            {
+                Id = m.Id,
+                TicketId = m.TicketId,
+                AuthorId = m.AuthorId,
+                Content = m.Content,
+                DocumentId = m.DocumentId,
+                CreatedAt = m.CreatedAt,
+                Author = new UserDto
+                {
+                    Id = m.Author.Id,
+                    Email = m.Author.Email,
+                    FirstName = m.Author.FirstName,
+                    LastName = m.Author.LastName,
+                    Patronymic = m.Author.Patronymic,
+                    Role = m.Author.Role,
+                    GroupName = m.Author.GroupName,
+                    CreatedAt = m.Author.CreatedAt
+                }
+            }).ToList();
+
+            Console.WriteLine($"GetTicket: Загружено {messagesDto.Count} сообщений для заявки {id}");
+            foreach (var msg in messagesDto)
+            {
+                Console.WriteLine($"  - Message {msg.Id}, DocumentId: {msg.DocumentId}, HasDocument: {msg.DocumentId.HasValue}, Content: {msg.Content.Substring(0, Math.Min(50, msg.Content.Length))}...");
             }
 
             var ticketDto = new TicketDto
@@ -112,25 +144,7 @@ namespace ithubsec.Controllers
                     GroupName = ticket.Author.GroupName,
                     CreatedAt = ticket.Author.CreatedAt
                 },
-                Messages = ticket.Messages.OrderBy(m => m.CreatedAt).Select(m => new MessageDto
-                {
-                    Id = m.Id,
-                    TicketId = m.TicketId,
-                    AuthorId = m.AuthorId,
-                    Content = m.Content,
-                    CreatedAt = m.CreatedAt,
-                    Author = new UserDto
-                    {
-                        Id = m.Author.Id,
-                        Email = m.Author.Email,
-                        FirstName = m.Author.FirstName,
-                        LastName = m.Author.LastName,
-                        Patronymic = m.Author.Patronymic,
-                        Role = m.Author.Role,
-                        GroupName = m.Author.GroupName,
-                        CreatedAt = m.Author.CreatedAt
-                    }
-                }).ToList()
+                Messages = messagesDto
             };
 
             return Ok(ticketDto);
@@ -139,7 +153,22 @@ namespace ithubsec.Controllers
         [HttpPost]
         public async Task<ActionResult<TicketDto>> CreateTicket(CreateTicketRequest request)
         {
+            Console.WriteLine($"=== CreateTicket вызван ===");
+            Console.WriteLine($"Request.DocumentType: {request.DocumentType}");
+            Console.WriteLine($"Request.Title: {request.Title}");
+            Console.WriteLine($"Request.Description: {request.Description}");
+            
             var userId = GetCurrentUserId();
+            Console.WriteLine($"UserId: {userId}");
+
+            // Загружаем пользователя для создания документа
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                Console.WriteLine("❌ Пользователь не найден!");
+                return Unauthorized();
+            }
+            Console.WriteLine($"Пользователь найден: {user.FirstName} {user.LastName}");
 
             var ticket = new Ticket
             {
@@ -152,10 +181,136 @@ namespace ithubsec.Controllers
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
 
-            // Загружаем автора для ответа
-            await _context.Entry(ticket)
-                .Reference(t => t.Author)
-                .LoadAsync();
+            // Автоматически создаем документ для пользователя
+            try
+            {
+                var documentType = request.DocumentType ?? "application";
+                Console.WriteLine($"Начинаем создание документа. Тип: {documentType}, TicketId: {ticket.Id}, UserId: {user.Id}");
+                
+                var document = await _documentService.GenerateDocumentAsync(ticket, user, documentType);
+                Console.WriteLine($"Документ сгенерирован. DocumentId: {document.Id}, FilePath: {document.FilePath}, FileSize: {document.FileSize}");
+                
+                _context.Documents.Add(document);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Документ сохранен в БД. DocumentId: {document.Id}");
+
+                // Создаем автоматическое сообщение с информацией о документе
+                var documentTypeNames = new Dictionary<string, string>
+                {
+                    { "application", "Заявление" },
+                    { "request", "Запрос" },
+                    { "complaint", "Жалоба" },
+                    { "petition", "Ходатайство" }
+                };
+
+                var documentTypeName = documentTypeNames.ContainsKey(documentType.ToLower()) 
+                    ? documentTypeNames[documentType.ToLower()] 
+                    : "Документ";
+
+                var documentMessage = new Message
+                {
+                    TicketId = ticket.Id,
+                    AuthorId = userId, // Сообщение от имени пользователя, создавшего заявку
+                    DocumentId = document.Id, // Связываем сообщение с документом
+                    Content = $"📄 Создан документ: {documentTypeName}\n\n" +
+                             $"Тип документа: {documentTypeName}\n" +
+                             $"Файл: {document.FileName}\n" +
+                             $"Размер: {(document.FileSize / 1024.0):F2} КБ"
+                };
+
+                Console.WriteLine($"Создаем сообщение. TicketId: {documentMessage.TicketId}, AuthorId: {documentMessage.AuthorId}, DocumentId: {documentMessage.DocumentId}");
+                
+                _context.Messages.Add(documentMessage);
+                await _context.SaveChangesAsync();
+                
+                Console.WriteLine($"✅ Документ создан и сообщение отправлено. DocumentId: {document.Id}, MessageId: {documentMessage.Id}, Content: {documentMessage.Content.Substring(0, Math.Min(50, documentMessage.Content.Length))}...");
+                
+                // Проверяем, что сообщение действительно сохранено в БД
+                var savedMessage = await _context.Messages.FindAsync(documentMessage.Id);
+                if (savedMessage != null)
+                {
+                    Console.WriteLine($"✅ Сообщение подтверждено в БД. MessageId: {savedMessage.Id}, DocumentId: {savedMessage.DocumentId}, TicketId: {savedMessage.TicketId}");
+                }
+                else
+                {
+                    Console.WriteLine($"❌ ОШИБКА: Сообщение не найдено в БД после сохранения!");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Логируем ошибку, но не прерываем создание заявки
+                Console.WriteLine($"❌ ОШИБКА при создании документа: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"InnerException: {ex.InnerException.Message}");
+                    Console.WriteLine($"InnerException StackTrace: {ex.InnerException.StackTrace}");
+                }
+            }
+
+            // Перезагружаем заявку с сообщениями из базы данных
+            // Сначала проверяем, есть ли сообщения в БД напрямую
+            var messagesCount = await _context.Messages.CountAsync(m => m.TicketId == ticket.Id);
+            Console.WriteLine($"Прямой запрос к БД: найдено {messagesCount} сообщений для заявки {ticket.Id}");
+            
+            if (messagesCount > 0)
+            {
+                var directMessages = await _context.Messages
+                    .Where(m => m.TicketId == ticket.Id)
+                    .Include(m => m.Author)
+                    .ToListAsync();
+                Console.WriteLine($"Прямой запрос сообщений:");
+                foreach (var msg in directMessages)
+                {
+                    Console.WriteLine($"  - Сообщение {msg.Id}, DocumentId: {msg.DocumentId}, AuthorId: {msg.AuthorId}, Content: {msg.Content.Substring(0, Math.Min(50, msg.Content.Length))}...");
+                }
+            }
+            
+            ticket = await _context.Tickets
+                .Include(t => t.Author)
+                .Include(t => t.Messages)
+                    .ThenInclude(m => m.Author)
+                .FirstOrDefaultAsync(t => t.Id == ticket.Id);
+
+            Console.WriteLine($"Загружено сообщений через Include для заявки {ticket.Id}: {ticket?.Messages?.Count ?? 0}");
+            if (ticket?.Messages != null && ticket.Messages.Count > 0)
+            {
+                foreach (var msg in ticket.Messages)
+                {
+                    Console.WriteLine($"  - Сообщение {msg.Id}, DocumentId: {msg.DocumentId}, AuthorId: {msg.AuthorId}, Content: {msg.Content.Substring(0, Math.Min(50, msg.Content.Length))}...");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"⚠️ ВНИМАНИЕ: Сообщения не загружены через Include, хотя в БД их {messagesCount}!");
+            }
+
+            var messagesList = ticket.Messages.OrderBy(m => m.CreatedAt).Select(m => new MessageDto
+            {
+                Id = m.Id,
+                TicketId = m.TicketId,
+                AuthorId = m.AuthorId,
+                Content = m.Content,
+                DocumentId = m.DocumentId,
+                CreatedAt = m.CreatedAt,
+                Author = new UserDto
+                {
+                    Id = m.Author.Id,
+                    Email = m.Author.Email,
+                    FirstName = m.Author.FirstName,
+                    LastName = m.Author.LastName,
+                    Patronymic = m.Author.Patronymic,
+                    Role = m.Author.Role,
+                    GroupName = m.Author.GroupName,
+                    CreatedAt = m.Author.CreatedAt
+                }
+            }).ToList();
+
+            Console.WriteLine($"Создано MessageDto: {messagesList.Count}");
+            foreach (var msgDto in messagesList)
+            {
+                Console.WriteLine($"  - MessageDto {msgDto.Id}, DocumentId: {msgDto.DocumentId}, HasDocument: {msgDto.DocumentId.HasValue}");
+            }
 
             var ticketDto = new TicketDto
             {
@@ -176,7 +331,8 @@ namespace ithubsec.Controllers
                     Role = ticket.Author.Role,
                     GroupName = ticket.Author.GroupName,
                     CreatedAt = ticket.Author.CreatedAt
-                }
+                },
+                Messages = messagesList
             };
 
             return CreatedAtAction(nameof(GetTicket), new { id = ticket.Id }, ticketDto);
@@ -275,6 +431,7 @@ namespace ithubsec.Controllers
                 TicketId = message.TicketId,
                 AuthorId = message.AuthorId,
                 Content = message.Content,
+                DocumentId = message.DocumentId,
                 CreatedAt = message.CreatedAt,
                 Author = new UserDto
                 {
@@ -324,6 +481,7 @@ namespace ithubsec.Controllers
                 TicketId = m.TicketId,
                 AuthorId = m.AuthorId,
                 Content = m.Content,
+                DocumentId = m.DocumentId,
                 CreatedAt = m.CreatedAt,
                 Author = new UserDto
                 {

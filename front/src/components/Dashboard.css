@@ -3,23 +3,6 @@
   background: transparent;
   position: relative;
   z-index: 1;
-  background: 
-    radial-gradient(circle at 10% 20%, rgba(120, 119, 198, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(255, 119, 198, 0.05) 0%, transparent 50%);
-  animation: dashboardGlow 10s ease-in-out infinite;
-}
-
-@keyframes dashboardGlow {
-  0%, 100% {
-    background: 
-      radial-gradient(circle at 10% 20%, rgba(120, 119, 198, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 90% 80%, rgba(255, 119, 198, 0.05) 0%, transparent 50%);
-  }
-  50% {
-    background: 
-      radial-gradient(circle at 90% 20%, rgba(120, 119, 198, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 10% 80%, rgba(255, 119, 198, 0.08) 0%, transparent 50%);
-  }
 }
 
 .dashboard-header {
@@ -38,19 +21,14 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  background: #4a90e2;
 }
 
 .dashboard-header h1 {
   margin: 0 0 10px 0;
-  color: #e0e0e0;
+  color: #4a90e2;
   font-size: 32px;
   font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
 }
 
 .dashboard-subtitle {
@@ -76,13 +54,9 @@
 }
 
 .filter-label {
-  color: #e0e0e0;
+  color: #4a90e2;
   font-size: 16px;
   font-weight: 500;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   white-space: nowrap;
 }
 
@@ -108,13 +82,13 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
   background-color: rgba(50, 50, 50, 0.8);
 }
 
 .filter-select:hover {
-  border-color: rgba(102, 126, 234, 0.5);
+  border-color: rgba(74, 144, 226, 0.5);
   background-color: rgba(50, 50, 50, 0.8);
 }
 

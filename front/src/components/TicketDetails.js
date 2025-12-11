@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ticketService } from '../services/ticketService';
+import { documentService } from '../services/documentService';
 import { useAuth } from '../contexts/AuthContext';
 import RequireAuth from './RequireAuth';
 import './TicketDetails.css';
@@ -16,6 +17,7 @@ const TicketDetails = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [downloadingDocument, setDownloadingDocument] = useState(null);
 
   useEffect(() => {
     loadTicket();
@@ -25,6 +27,18 @@ const TicketDetails = () => {
     try {
       setLoading(true);
       const data = await ticketService.getTicket(id);
+      console.log('Загружена заявка:', data);
+      console.log('Сообщения:', data.messages);
+      if (data.messages) {
+        data.messages.forEach((msg, index) => {
+          console.log(`Сообщение ${index}:`, {
+            id: msg.id,
+            documentId: msg.documentId,
+            hasDocument: !!msg.documentId,
+            content: msg.content?.substring(0, 50)
+          });
+        });
+      }
       setTicket(data);
       setMessages(data.messages || []);
     } catch (err) {
@@ -117,6 +131,21 @@ const TicketDetails = () => {
     });
   };
 
+  const handleDownloadDocument = async (documentId, ticketId) => {
+    try {
+      setDownloadingDocument(documentId);
+      const blob = await documentService.getDocument(documentId);
+      // Получаем имя файла из заголовка ответа или используем дефолтное
+      const fileName = `document_${ticketId}.docx`;
+      documentService.downloadDocument(blob, fileName);
+    } catch (error) {
+      console.error('Error downloading document:', error);
+      alert('Ошибка скачивания документа');
+    } finally {
+      setDownloadingDocument(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="ticket-details-container">
@@ -203,6 +232,21 @@ const TicketDetails = () => {
                       <span className="message-time">{formatMessageTime(message.createdAt)}</span>
                     </div>
                     <div className="message-content">{message.content}</div>
+                    {message.documentId && (
+                      <div className="message-document">
+                        <button
+                          onClick={() => handleDownloadDocument(message.documentId, message.ticketId)}
+                          disabled={downloadingDocument === message.documentId}
+                          className="download-document-btn"
+                        >
+                          {downloadingDocument === message.documentId ? (
+                            <>⏳ Скачивание...</>
+                          ) : (
+                            <>📥 Скачать документ</>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

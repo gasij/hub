@@ -12,6 +12,7 @@ namespace ithubsec.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Document> Documents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,6 +52,18 @@ namespace ithubsec.Data
             modelBuilder.Entity<Message>()
                 .HasIndex(m => m.CreatedAt);
 
+            modelBuilder.Entity<Message>()
+                .HasIndex(m => m.DocumentId);
+
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.TicketId);
+
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.UserId);
+
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.CreatedAt);
+
             // Настройка связей
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Author)
@@ -68,6 +81,24 @@ namespace ithubsec.Data
                 .HasOne(m => m.Author)
                 .WithMany()
                 .HasForeignKey(m => m.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Document)
+                .WithMany()
+                .HasForeignKey(m => m.DocumentId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Document>()
+                .HasOne(d => d.Ticket)
+                .WithMany()
+                .HasForeignKey(d => d.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Document>()
+                .HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Настройка ограничений

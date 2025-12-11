@@ -10,6 +10,9 @@ namespace ithubsec.DTOs
 
         [Required]
         public string Description { get; set; } = string.Empty;
+
+        [MaxLength(100)]
+        public string? DocumentType { get; set; } = "application"; // По умолчанию "заявление"
     }
 
     public class UpdateTicketStatusRequest
@@ -105,6 +108,7 @@ namespace ithubsec.DTOs
         public Guid TicketId { get; set; }
         public Guid AuthorId { get; set; }
         public string Content { get; set; } = string.Empty;
+        public Guid? DocumentId { get; set; }
         public DateTime CreatedAt { get; set; }
         public UserDto Author { get; set; } = null!;
     }

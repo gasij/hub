@@ -9,7 +9,12 @@ using ithubsec.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -49,6 +54,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Добавляем сервисы
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
 
 // Настройка JWT аутентификации
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

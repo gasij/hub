@@ -17,6 +17,8 @@ namespace ithubsec.Models
         [Required]
         public string Content { get; set; } = string.Empty;
 
+        public Guid? DocumentId { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Навигационные свойства
@@ -25,5 +27,8 @@ namespace ithubsec.Models
 
         [ForeignKey("AuthorId")]
         public virtual User Author { get; set; } = null!;
+
+        [ForeignKey("DocumentId")]
+        public virtual Document? Document { get; set; }
     }
 }

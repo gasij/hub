@@ -3,52 +3,7 @@
   background: #0a0a0a;
   position: relative;
   overflow-x: hidden;
-  animation: appPulse 10s ease-in-out infinite;
   z-index: 1;
-}
-
-@keyframes appPulse {
-  0%, 100% {
-    background: #0a0a0a;
-  }
-  50% {
-    background: #0f0f0f;
-  }
-}
-
-/* Анимированный градиентный фон */
-.App::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.1) 0%, transparent 50%);
-  animation: backgroundMove 20s ease-in-out infinite;
-  z-index: -3;
-}
-
-@keyframes backgroundMove {
-  0%, 100% {
-    transform: translateX(0) translateY(0) scale(1);
-    opacity: 0.8;
-  }
-  25% {
-    transform: translateX(-5%) translateY(-5%) scale(1.1);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateX(5%) translateY(5%) scale(0.9);
-    opacity: 1;
-  }
-  75% {
-    transform: translateX(-3%) translateY(3%) scale(1.05);
-    opacity: 0.7;
-  }
 }
 
 /* Убрали плавающие частицы */
@@ -81,6 +36,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #0a0a0a;
   color: #e0e0e0;
+  overflow-x: hidden;
 }
 
 code {

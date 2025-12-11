@@ -7,7 +7,8 @@ import './TicketForm.css';
 const TicketForm = () => {
   const [formData, setFormData] = useState({
     title: '',
-    description: ''
+    description: '',
+    documentType: 'application'
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -69,6 +70,25 @@ const TicketForm = () => {
                 rows="6"
                 placeholder="Подробное описание проблемы или запроса"
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="documentType">Тип документа:</label>
+              <select
+                id="documentType"
+                name="documentType"
+                value={formData.documentType}
+                onChange={handleChange}
+                className="form-select"
+              >
+                <option value="application">Заявление</option>
+                <option value="request">Запрос</option>
+                <option value="complaint">Жалоба</option>
+                <option value="petition">Ходатайство</option>
+              </select>
+              <small className="form-hint">
+                При создании заявки автоматически будет сгенерирован документ выбранного типа
+              </small>
             </div>
 
             {error && <div className="error-message">{error}</div>}
