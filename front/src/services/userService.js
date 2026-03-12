@@ -49,5 +49,14 @@ export const userService = {
     } catch (error) {
       throw error.response?.data || error;
     }
+  },
+
+  // Смена пароля пользователя (только для админов)
+  async changeUserPassword(userId, newPassword) {
+    try {
+      await api.put(`/users/${userId}/password`, { newPassword });
+    } catch (error) {
+      throw error.response?.data || error;
+    }
   }
 };

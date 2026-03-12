@@ -12,24 +12,24 @@
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--border);
 }
 
 .back-button {
-  background: rgba(108, 117, 125, 0.8);
-  color: white;
-  border: 1px solid rgba(108, 117, 125, 0.3);
+  background: var(--text-muted);
+  color: var(--bg-elevated);
+  border: 1px solid var(--text-muted);
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .back-button:hover {
-  background: rgba(90, 98, 104, 0.9);
+  background: var(--text-muted-2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
 .ticket-status-section {
@@ -39,7 +39,7 @@
 }
 
 .ticket-status-badge {
-  color: white;
+  color: var(--bg-elevated);
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 14px;
@@ -49,29 +49,27 @@
 
 .status-select {
   padding: 8px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   font-size: 14px;
-  background: rgba(40, 40, 40, 0.8);
-  color: #e0e0e0;
+  background: var(--input-bg);
+  color: var(--text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .status-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-  background: rgba(50, 50, 50, 0.8);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-soft);
 }
 
 .ticket-details-card {
-  background: rgba(30, 30, 30, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
+  background: var(--bg-card);
+  border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px var(--shadow);
+  border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
 }
@@ -83,40 +81,39 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: #4a90e2;
+  background: var(--primary);
 }
 
-.ticket-title {
+.ticket-details-card .ticket-title {
   margin: 0 0 25px 0;
   font-size: 28px;
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--primary);
   line-height: 1.3;
-  color: #4a90e2;
 }
 
 .ticket-meta {
-  background: rgba(40, 40, 40, 0.6);
+  background: var(--bg-elevated);
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
 }
 
 .ticket-author {
   font-size: 16px;
-  color: #e0e0e0;
+  color: var(--text);
   margin-bottom: 10px;
 }
 
 .ticket-group {
-  color: #b0b0b0;
+  color: var(--text-muted);
   font-style: italic;
 }
 
 .ticket-dates {
   font-size: 14px;
-  color: #b0b0b0;
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -129,65 +126,40 @@
 .ticket-description h3 {
   margin: 0 0 15px 0;
   font-size: 20px;
-  color: #e0e0e0;
+  color: var(--text);
   font-weight: 600;
 }
 
 .ticket-description p {
-  color: #b0b0b0;
+  color: var(--text-muted);
   line-height: 1.6;
   font-size: 16px;
   margin: 0;
   white-space: pre-wrap;
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 60px 20px;
   font-size: 18px;
-  color: #b0b0b0;
+  color: var(--text-muted);
 }
 
 .error {
-  color: #ff6b6b;
+  color: var(--error);
 }
 
-@media (max-width: 768px) {
-  .ticket-details-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-  
-  .ticket-status-section {
-    align-self: stretch;
-    justify-content: space-between;
-  }
-  
-  .ticket-details-card {
-    padding: 20px;
-  }
-  
-  .ticket-title {
-    font-size: 24px;
-  }
-  
-  .ticket-meta {
-    padding: 15px;
-  }
-}
-
-/* Стили для сообщений */
 .messages-section {
   margin-top: 30px;
   padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border);
 }
 
 .messages-section h3 {
   margin: 0 0 20px 0;
   font-size: 20px;
-  color: #e0e0e0;
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -203,40 +175,40 @@
 }
 
 .messages-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--scrollbar-track);
   border-radius: 3px;
 }
 
 .messages-list::-webkit-scrollbar-thumb {
-  background: rgba(74, 144, 226, 0.5);
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 .messages-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(74, 144, 226, 0.7);
+  background: var(--primary);
 }
 
 .message {
-  background: rgba(40, 40, 40, 0.6);
+  background: var(--bg-elevated);
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
 }
 
 .message:hover {
-  background: rgba(50, 50, 50, 0.7);
-  transform: translateY(-1px);
+  border-color: var(--border);
+  box-shadow: 0 2px 8px var(--shadow);
 }
 
 .own-message {
-  background: rgba(74, 144, 226, 0.2);
-  border-color: rgba(74, 144, 226, 0.3);
+  background: var(--primary-soft);
+  border-color: var(--primary-soft);
 }
 
 .own-message:hover {
-  background: rgba(74, 144, 226, 0.3);
+  border-color: var(--primary);
 }
 
 .message-header {
@@ -248,17 +220,17 @@
 
 .message-author {
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--text);
   font-size: 14px;
 }
 
 .message-time {
-  color: #b0b0b0;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
 .message-content {
-  color: #d0d0d0;
+  color: var(--text-muted);
   line-height: 1.5;
   font-size: 15px;
   white-space: pre-wrap;
@@ -268,28 +240,28 @@
 .message-document {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border);
 }
 
 .download-document-btn {
-  background: #4a90e2;
-  color: white;
+  background: var(--primary);
+  color: var(--bg-elevated);
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .download-document-btn:hover:not(:disabled) {
-  background: #5ba0f2;
+  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-md);
 }
 
 .download-document-btn:disabled {
@@ -299,12 +271,12 @@
 
 .no-messages {
   text-align: center;
-  color: #b0b0b0;
+  color: var(--text-muted);
   font-style: italic;
   padding: 40px 20px;
-  background: rgba(40, 40, 40, 0.3);
+  background: var(--bg-elevated);
   border-radius: 12px;
-  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border: 1px dashed var(--border);
 }
 
 .message-form {
@@ -320,49 +292,45 @@
 .message-textarea {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: rgba(40, 40, 40, 0.8);
-  color: #e0e0e0;
+  border: 2px solid var(--input-border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
   font-size: 14px;
   font-family: inherit;
   resize: vertical;
   min-height: 80px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .message-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-  background: rgba(50, 50, 50, 0.8);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-soft);
 }
 
 .message-textarea::placeholder {
-  color: #888;
+  color: var(--text-muted-2);
 }
 
 .send-message-btn {
   align-self: flex-end;
-  background: #4a90e2;
-  color: white;
+  background: var(--primary);
+  color: var(--bg-elevated);
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   min-width: 120px;
 }
 
 .send-message-btn:hover:not(:disabled) {
-  background: #5ba0f2;
-}
-
-.send-message-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-md);
 }
 
 .send-message-btn:disabled {
@@ -372,15 +340,38 @@
 }
 
 @media (max-width: 768px) {
+  .ticket-details-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .ticket-status-section {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+
+  .ticket-details-card {
+    padding: 20px;
+  }
+
+  .ticket-details-card .ticket-title {
+    font-size: 24px;
+  }
+
+  .ticket-meta {
+    padding: 15px;
+  }
+
   .message-input-group {
     gap: 8px;
   }
-  
+
   .message-textarea {
     padding: 10px 12px;
-    font-size: 16px; /* Предотвращает зум на iOS */
+    font-size: 16px;
   }
-  
+
   .send-message-btn {
     align-self: stretch;
     padding: 12px;

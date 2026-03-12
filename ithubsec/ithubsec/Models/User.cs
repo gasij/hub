@@ -35,6 +35,17 @@ namespace ithubsec.Models
         [MaxLength(50)]
         public string? GroupName { get; set; }
 
+        /// <summary>Дата рождения для справок (дд.мм.гггг).</summary>
+        public DateTime? BirthDate { get; set; }
+
+        /// <summary>Курс обучения (например, 1, 2, 3).</summary>
+        [MaxLength(10)]
+        public string? Course { get; set; }
+
+        /// <summary>Направление подготовки / специальность.</summary>
+        [MaxLength(200)]
+        public string? Direction { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

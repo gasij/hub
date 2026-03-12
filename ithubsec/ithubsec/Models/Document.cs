@@ -27,7 +27,7 @@ namespace ithubsec.Models
         public string FilePath { get; set; } = string.Empty;
 
         [MaxLength(100)]
-        public string ContentType { get; set; } = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        public string ContentType { get; set; } = "application/pdf";
 
         public long FileSize { get; set; }
 

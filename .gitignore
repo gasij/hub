@@ -29,6 +29,9 @@ build/
 *.db
 *.sqlite
 
+# Generated documents (created at runtime)
+ithubsec/ithubsec/wwwroot/documents/
+
 # IDE
 .idea/
 *.swp

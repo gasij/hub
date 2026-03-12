@@ -62,6 +62,19 @@ namespace ithubsec.DTOs
 
         [StringLength(20)]
         public string? GroupName { get; set; }
+
+        public DateTime? BirthDate { get; set; }
+        [StringLength(10)]
+        public string? Course { get; set; }
+        [StringLength(200)]
+        public string? Direction { get; set; }
+    }
+
+    public class ChangePasswordRequest
+    {
+        [Required]
+        [MinLength(6, ErrorMessage = "Пароль должен быть не менее 6 символов")]
+        public string NewPassword { get; set; } = string.Empty;
     }
 
     public class CreateUserRequest
@@ -90,6 +103,12 @@ namespace ithubsec.DTOs
 
         [StringLength(20)]
         public string? GroupName { get; set; }
+
+        public DateTime? BirthDate { get; set; }
+        [StringLength(10)]
+        public string? Course { get; set; }
+        [StringLength(200)]
+        public string? Direction { get; set; }
     }
 
     public class CreateMessageRequest

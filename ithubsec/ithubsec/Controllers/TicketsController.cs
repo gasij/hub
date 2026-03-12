@@ -65,6 +65,9 @@ namespace ithubsec.Controllers
                     Patronymic = t.Author.Patronymic,
                     Role = t.Author.Role,
                     GroupName = t.Author.GroupName,
+                    BirthDate = t.Author.BirthDate,
+                    Course = t.Author.Course,
+                    Direction = t.Author.Direction,
                     CreatedAt = t.Author.CreatedAt
                 }
             });
@@ -114,6 +117,9 @@ namespace ithubsec.Controllers
                     Patronymic = m.Author.Patronymic,
                     Role = m.Author.Role,
                     GroupName = m.Author.GroupName,
+                    BirthDate = m.Author.BirthDate,
+                    Course = m.Author.Course,
+                    Direction = m.Author.Direction,
                     CreatedAt = m.Author.CreatedAt
                 }
             }).ToList();
@@ -142,6 +148,9 @@ namespace ithubsec.Controllers
                     Patronymic = ticket.Author.Patronymic,
                     Role = ticket.Author.Role,
                     GroupName = ticket.Author.GroupName,
+                    BirthDate = ticket.Author.BirthDate,
+                    Course = ticket.Author.Course,
+                    Direction = ticket.Author.Direction,
                     CreatedAt = ticket.Author.CreatedAt
                 },
                 Messages = messagesDto
@@ -165,7 +174,7 @@ namespace ithubsec.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
             {
-                Console.WriteLine("❌ Пользователь не найден!");
+                Console.WriteLine(" Пользователь не найден!");
                 return Unauthorized();
             }
             Console.WriteLine($"Пользователь найден: {user.FirstName} {user.LastName}");
@@ -200,7 +209,10 @@ namespace ithubsec.Controllers
                     { "application", "Заявление" },
                     { "request", "Запрос" },
                     { "complaint", "Жалоба" },
-                    { "petition", "Ходатайство" }
+                    { "petition", "Ходатайство" },
+                    { "study_certificate", "Справка об обучении" },
+                    { "military", "Справка для военкомата" },
+                    { "enrollment", "Справка рекомендован к зачислению" }
                 };
 
                 var documentTypeName = documentTypeNames.ContainsKey(documentType.ToLower()) 
@@ -212,7 +224,7 @@ namespace ithubsec.Controllers
                     TicketId = ticket.Id,
                     AuthorId = userId, // Сообщение от имени пользователя, создавшего заявку
                     DocumentId = document.Id, // Связываем сообщение с документом
-                    Content = $"📄 Создан документ: {documentTypeName}\n\n" +
+                    Content = $"Создан документ: {documentTypeName}\n\n" +
                              $"Тип документа: {documentTypeName}\n" +
                              $"Файл: {document.FileName}\n" +
                              $"Размер: {(document.FileSize / 1024.0):F2} КБ"
@@ -223,23 +235,23 @@ namespace ithubsec.Controllers
                 _context.Messages.Add(documentMessage);
                 await _context.SaveChangesAsync();
                 
-                Console.WriteLine($"✅ Документ создан и сообщение отправлено. DocumentId: {document.Id}, MessageId: {documentMessage.Id}, Content: {documentMessage.Content.Substring(0, Math.Min(50, documentMessage.Content.Length))}...");
+                Console.WriteLine($" Документ создан и сообщение отправлено. DocumentId: {document.Id}, MessageId: {documentMessage.Id}, Content: {documentMessage.Content.Substring(0, Math.Min(50, documentMessage.Content.Length))}...");
                 
                 // Проверяем, что сообщение действительно сохранено в БД
                 var savedMessage = await _context.Messages.FindAsync(documentMessage.Id);
                 if (savedMessage != null)
                 {
-                    Console.WriteLine($"✅ Сообщение подтверждено в БД. MessageId: {savedMessage.Id}, DocumentId: {savedMessage.DocumentId}, TicketId: {savedMessage.TicketId}");
+                    Console.WriteLine($" Сообщение подтверждено в БД. MessageId: {savedMessage.Id}, DocumentId: {savedMessage.DocumentId}, TicketId: {savedMessage.TicketId}");
                 }
                 else
                 {
-                    Console.WriteLine($"❌ ОШИБКА: Сообщение не найдено в БД после сохранения!");
+                    Console.WriteLine($" ОШИБКА: Сообщение не найдено в БД после сохранения!");
                 }
             }
             catch (Exception ex)
             {
                 // Логируем ошибку, но не прерываем создание заявки
-                Console.WriteLine($"❌ ОШИБКА при создании документа: {ex.Message}");
+                Console.WriteLine($" ОШИБКА при создании документа: {ex.Message}");
                 Console.WriteLine($"StackTrace: {ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
@@ -282,7 +294,7 @@ namespace ithubsec.Controllers
             }
             else
             {
-                Console.WriteLine($"⚠️ ВНИМАНИЕ: Сообщения не загружены через Include, хотя в БД их {messagesCount}!");
+                Console.WriteLine($" ВНИМАНИЕ: Сообщения не загружены через Include, хотя в БД их {messagesCount}!");
             }
 
             var messagesList = ticket.Messages.OrderBy(m => m.CreatedAt).Select(m => new MessageDto
@@ -302,6 +314,9 @@ namespace ithubsec.Controllers
                     Patronymic = m.Author.Patronymic,
                     Role = m.Author.Role,
                     GroupName = m.Author.GroupName,
+                    BirthDate = m.Author.BirthDate,
+                    Course = m.Author.Course,
+                    Direction = m.Author.Direction,
                     CreatedAt = m.Author.CreatedAt
                 }
             }).ToList();
@@ -330,6 +345,9 @@ namespace ithubsec.Controllers
                     Patronymic = ticket.Author.Patronymic,
                     Role = ticket.Author.Role,
                     GroupName = ticket.Author.GroupName,
+                    BirthDate = ticket.Author.BirthDate,
+                    Course = ticket.Author.Course,
+                    Direction = ticket.Author.Direction,
                     CreatedAt = ticket.Author.CreatedAt
                 },
                 Messages = messagesList
@@ -381,6 +399,9 @@ namespace ithubsec.Controllers
                     Patronymic = ticket.Author.Patronymic,
                     Role = ticket.Author.Role,
                     GroupName = ticket.Author.GroupName,
+                    BirthDate = ticket.Author.BirthDate,
+                    Course = ticket.Author.Course,
+                    Direction = ticket.Author.Direction,
                     CreatedAt = ticket.Author.CreatedAt
                 }
             };
@@ -442,6 +463,9 @@ namespace ithubsec.Controllers
                     Patronymic = message.Author.Patronymic,
                     Role = message.Author.Role,
                     GroupName = message.Author.GroupName,
+                    BirthDate = message.Author.BirthDate,
+                    Course = message.Author.Course,
+                    Direction = message.Author.Direction,
                     CreatedAt = message.Author.CreatedAt
                 }
             };
@@ -492,6 +516,9 @@ namespace ithubsec.Controllers
                     Patronymic = m.Author.Patronymic,
                     Role = m.Author.Role,
                     GroupName = m.Author.GroupName,
+                    BirthDate = m.Author.BirthDate,
+                    Course = m.Author.Course,
+                    Direction = m.Author.Direction,
                     CreatedAt = m.Author.CreatedAt
                 }
             });

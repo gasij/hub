@@ -1,0 +1,67 @@
+/* Светлая тема — более глубокие, насыщенные цвета */
+:root,
+[data-theme="light"] {
+  --bg: #e5e4e0;
+  --bg-elevated: #f5f4f0;
+  --bg-card: #faf9f6;
+  --text: #1a1a1a;
+  --text-muted: #424242;
+  --text-muted-2: #5c5c5c;
+  --border: rgba(0, 0, 0, 0.14);
+  --border-light: rgba(0, 0, 0, 0.08);
+  --primary: #1e5bb5;
+  --primary-hover: #164a94;
+  --primary-soft: rgba(30, 91, 181, 0.18);
+  --accent: #2568c4;
+  --input-bg: #faf9f6;
+  --input-border: rgba(0, 0, 0, 0.18);
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-md: rgba(0, 0, 0, 0.16);
+  --error: #991b1b;
+  --error-soft: rgba(153, 27, 27, 0.14);
+  --success: #166534;
+  --navbar-bg: rgba(245, 244, 240, 0.96);
+  --navbar-border: rgba(0, 0, 0, 0.1);
+  --gradient-accent: linear-gradient(135deg, #1e5bb5 0%, #2568c4 100%);
+  --scrollbar-track: rgba(0, 0, 0, 0.08);
+  --scrollbar-thumb: rgba(30, 91, 181, 0.45);
+  --overlay: rgba(0, 0, 0, 0.55);
+}
+
+/* Тёмная тема — более глубокие тона */
+[data-theme="dark"] {
+  --bg: #0f0f11;
+  --bg-elevated: #18181b;
+  --bg-card: #1c1c1f;
+  --text: #e4e4e8;
+  --text-muted: #9ca3af;
+  --text-muted-2: #6b7280;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --primary: #3b82f6;
+  --primary-hover: #60a5fa;
+  --primary-soft: rgba(59, 130, 246, 0.22);
+  --accent: #60a5fa;
+  --input-bg: #1c1c1f;
+  --input-border: rgba(255, 255, 255, 0.14);
+  --shadow: rgba(0, 0, 0, 0.35);
+  --shadow-md: rgba(0, 0, 0, 0.5);
+  --error: #dc2626;
+  --error-soft: rgba(220, 38, 38, 0.18);
+  --success: #16a34a;
+  --navbar-bg: rgba(15, 15, 17, 0.95);
+  --navbar-border: rgba(255, 255, 255, 0.1);
+  --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  --scrollbar-track: rgba(255, 255, 255, 0.06);
+  --scrollbar-thumb: rgba(59, 130, 246, 0.5);
+  --overlay: rgba(0, 0, 0, 0.8);
+}
+
+/* В светлой теме фоны почти не видны, чтобы не отвлекать */
+[data-theme="light"] .animated-background {
+  opacity: 0.06;
+}
+
+[data-theme="light"] .logo-background {
+  opacity: 0.04;
+}

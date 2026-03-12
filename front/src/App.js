@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
@@ -11,20 +12,15 @@ import TicketDetails from './components/TicketDetails';
 import HomePage from './components/HomePage';
 import UserManagement from './components/UserManagement';
 import Profile from './components/Profile';
-import AnimatedBackground from './components/AnimatedBackground';
-import CursorTrail from './components/CursorTrail';
-import LogoBackground from './components/LogoBackground';
 import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <AnimatedBackground />
-          <LogoBackground />
-          <CursorTrail />
-          <Navbar />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <Navbar />
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -73,6 +69,7 @@ function App() {
         </div>
       </Router>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 

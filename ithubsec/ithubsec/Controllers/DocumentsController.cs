@@ -52,9 +52,9 @@ namespace ithubsec.Controllers
                 return NotFound(new { message = "Файл документа не найден на сервере" });
             }
 
-            // Читаем файл и возвращаем его
+            // Читаем файл и возвращаем его с явным именем для скачивания (чтобы .docx не подменялся на .pdf)
             var fileBytes = await System.IO.File.ReadAllBytesAsync(document.FilePath);
-            return File(fileBytes, document.ContentType, document.FileName);
+            return File(fileBytes, document.ContentType ?? "application/octet-stream", document.FileName);
         }
 
         [HttpGet("{id}")]
@@ -84,9 +84,9 @@ namespace ithubsec.Controllers
                 return NotFound(new { message = "Файл документа не найден на сервере" });
             }
 
-            // Читаем файл и возвращаем его
+            // Читаем файл и возвращаем его с явным именем для скачивания
             var fileBytes = await System.IO.File.ReadAllBytesAsync(document.FilePath);
-            return File(fileBytes, document.ContentType, document.FileName);
+            return File(fileBytes, document.ContentType ?? "application/octet-stream", document.FileName);
         }
 
         [HttpGet("user/{userId}")]

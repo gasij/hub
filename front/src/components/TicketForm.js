@@ -85,6 +85,9 @@ const TicketForm = () => {
                 <option value="request">Запрос</option>
                 <option value="complaint">Жалоба</option>
                 <option value="petition">Ходатайство</option>
+                <option value="study_certificate">Справка об обучении</option>
+                <option value="military">Справка для военкомата</option>
+                <option value="enrollment">Справка рекомендован к зачислению</option>
               </select>
               <small className="form-hint">
                 При создании заявки автоматически будет сгенерирован документ выбранного типа

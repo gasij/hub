@@ -15,16 +15,8 @@ const Dashboard = () => {
   return (
     <RequireAuth>
       <div className="dashboard">
+        {user?.role === 'admin' && (
         <div className="dashboard-header">
-          <h1>Добро пожаловать, {user?.firstName}!</h1>
-          <p className="dashboard-subtitle">
-            {user?.role === 'admin' 
-              ? 'Панель администратора - управление заявками и пользователями'
-              : 'Ваши заявки и обращения'
-            }
-          </p>
-          
-          {user?.role === 'admin' && (
             <div className="admin-filters">
               <div className="filter-container">
                 <label htmlFor="status-filter" className="filter-label">
@@ -44,8 +36,8 @@ const Dashboard = () => {
                 </select>
               </div>
             </div>
-          )}
         </div>
+        )}
         
         <TicketList statusFilter={statusFilter} />
       </div>

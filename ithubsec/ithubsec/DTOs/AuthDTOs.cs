@@ -50,6 +50,9 @@ namespace ithubsec.DTOs
         public string? Patronymic { get; set; }
         public string Role { get; set; } = string.Empty;
         public string? GroupName { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public string? Course { get; set; }
+        public string? Direction { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

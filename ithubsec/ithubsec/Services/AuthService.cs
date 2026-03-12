@@ -61,6 +61,9 @@ namespace ithubsec.Services
                     Patronymic = user.Patronymic,
                     Role = user.Role,
                     GroupName = user.GroupName,
+                    BirthDate = user.BirthDate,
+                    Course = user.Course,
+                    Direction = user.Direction,
                     CreatedAt = user.CreatedAt
                 }
             };
@@ -96,6 +99,9 @@ namespace ithubsec.Services
                     Patronymic = user.Patronymic,
                     Role = user.Role,
                     GroupName = user.GroupName,
+                    BirthDate = user.BirthDate,
+                    Course = user.Course,
+                    Direction = user.Direction,
                     CreatedAt = user.CreatedAt
                 }
             };

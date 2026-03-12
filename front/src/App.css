@@ -1,12 +1,11 @@
 .App {
   min-height: 100vh;
-  background: #0a0a0a;
+  background: var(--bg);
   position: relative;
   overflow-x: hidden;
   z-index: 1;
+  transition: background-color 0.25s ease;
 }
-
-/* Убрали плавающие частицы */
 
 .loading-container {
   display: flex;
@@ -18,32 +17,10 @@
 
 .loading {
   font-size: 18px;
-  color: #e0e0e0;
+  color: var(--text-muted);
   text-align: center;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 * {
   box-sizing: border-box;
 }
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: #0a0a0a;
-  color: #e0e0e0;
-  overflow-x: hidden;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-/* Убрали анимированную решетку */
-
-/* Убрали все летающие анимированные элементы */

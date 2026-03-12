@@ -16,7 +16,10 @@ const UserManagement = () => {
     lastName: '',
     patronymic: '',
     role: 'student',
-    groupName: ''
+    groupName: '',
+    birthDate: '',
+    course: '',
+    direction: ''
   });
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createForm, setCreateForm] = useState({
@@ -26,9 +29,16 @@ const UserManagement = () => {
     lastName: '',
     patronymic: '',
     role: 'student',
-    groupName: ''
+    groupName: '',
+    birthDate: '',
+    course: '',
+    direction: ''
   });
   const [deletingUser, setDeletingUser] = useState(null);
+  const [passwordUser, setPasswordUser] = useState(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   useEffect(() => {
     loadUsers();
@@ -75,13 +85,20 @@ const UserManagement = () => {
       lastName: user.lastName,
       patronymic: user.patronymic || '',
       role: user.role,
-      groupName: user.groupName || ''
+      groupName: user.groupName || '',
+      birthDate: user.birthDate ? user.birthDate.slice(0, 10) : '',
+      course: user.course || '',
+      direction: user.direction || ''
     });
   };
 
   const handleSaveUser = async () => {
     try {
-      await userService.updateUser(editingUser.id, editForm);
+      const payload = {
+        ...editForm,
+        birthDate: editForm.birthDate || null
+      };
+      await userService.updateUser(editingUser.id, payload);
       setUsers(users.map(u => 
         u.id === editingUser.id 
           ? { ...u, ...editForm }
@@ -101,13 +118,20 @@ const UserManagement = () => {
       lastName: '',
       patronymic: '',
       role: 'student',
-      groupName: ''
+      groupName: '',
+      birthDate: '',
+      course: '',
+      direction: ''
     });
   };
 
   const handleCreateUser = async () => {
     try {
-      const newUser = await userService.createUser(createForm);
+      const payload = {
+        ...createForm,
+        birthDate: createForm.birthDate || null
+      };
+      const newUser = await userService.createUser(payload);
       setUsers([...users, newUser]);
       setShowCreateModal(false);
       setCreateForm({
@@ -117,7 +141,10 @@ const UserManagement = () => {
         lastName: '',
         patronymic: '',
         role: 'student',
-        groupName: ''
+        groupName: '',
+        birthDate: '',
+        course: '',
+        direction: ''
       });
     } catch (err) {
       setError('Ошибка создания пользователя');
@@ -134,7 +161,10 @@ const UserManagement = () => {
       lastName: '',
       patronymic: '',
       role: 'student',
-      groupName: ''
+      groupName: '',
+      birthDate: '',
+      course: '',
+      direction: ''
     });
   };
 
@@ -151,6 +181,38 @@ const UserManagement = () => {
 
   const handleCancelDelete = () => {
     setDeletingUser(null);
+  };
+
+  const handleOpenChangePassword = (userItem) => {
+    setPasswordUser(userItem);
+    setNewPassword('');
+    setNewPasswordConfirm('');
+    setPasswordError('');
+  };
+
+  const handleCancelChangePassword = () => {
+    setPasswordUser(null);
+    setNewPassword('');
+    setNewPasswordConfirm('');
+    setPasswordError('');
+  };
+
+  const handleChangePassword = async () => {
+    setPasswordError('');
+    if (newPassword.length < 6) {
+      setPasswordError('Пароль должен быть не менее 6 символов');
+      return;
+    }
+    if (newPassword !== newPasswordConfirm) {
+      setPasswordError('Пароли не совпадают');
+      return;
+    }
+    try {
+      await userService.changeUserPassword(passwordUser.id, newPassword);
+      handleCancelChangePassword();
+    } catch (err) {
+      setPasswordError(err?.message || 'Ошибка смены пароля');
+    }
   };
 
   const getRoleColor = (role) => {
@@ -303,6 +365,13 @@ const UserManagement = () => {
                     Редактировать
                   </button>
                   <button 
+                    onClick={() => handleOpenChangePassword(userItem)}
+                    className="password-button"
+                    title="Сменить пароль"
+                  >
+                    Пароль
+                  </button>
+                  <button 
                     onClick={() => setDeletingUser(userItem)}
                     className="delete-button"
                     disabled={userItem.id === user?.id}
@@ -359,7 +428,7 @@ const UserManagement = () => {
                 </select>
               </div>
               
-              <div className="form-group">
+<div className="form-group">
                 <label>Группа:</label>
                 <input
                   type="text"
@@ -367,8 +436,35 @@ const UserManagement = () => {
                   onChange={(e) => setEditForm({...editForm, groupName: e.target.value})}
                 />
               </div>
+
+              <div className="form-group">
+                <label>Дата рождения (для справок):</label>
+                <input
+                  type="date"
+                  value={editForm.birthDate}
+                  onChange={(e) => setEditForm({...editForm, birthDate: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Курс:</label>
+                <input
+                  type="text"
+                  placeholder="1, 2, 3..."
+                  value={editForm.course}
+                  onChange={(e) => setEditForm({...editForm, course: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Направление подготовки:</label>
+                <input
+                  type="text"
+                  placeholder="Специальность / направление"
+                  value={editForm.direction}
+                  onChange={(e) => setEditForm({...editForm, direction: e.target.value})}
+                />
+              </div>
             </div>
-            
+
             <div className="edit-actions">
               <button onClick={handleCancelEdit} className="cancel-button">
                 Отмена
@@ -447,7 +543,7 @@ const UserManagement = () => {
                 </select>
               </div>
               
-              <div className="form-group">
+<div className="form-group">
                 <label>Группа:</label>
                 <input
                   type="text"
@@ -455,14 +551,85 @@ const UserManagement = () => {
                   onChange={(e) => setCreateForm({...createForm, groupName: e.target.value})}
                 />
               </div>
+              <div className="form-group">
+                <label>Дата рождения (для справок):</label>
+                <input
+                  type="date"
+                  value={createForm.birthDate}
+                  onChange={(e) => setCreateForm({...createForm, birthDate: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Курс:</label>
+                <input
+                  type="text"
+                  placeholder="1, 2, 3..."
+                  value={createForm.course}
+                  onChange={(e) => setCreateForm({...createForm, course: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Направление подготовки:</label>
+                <input
+                  type="text"
+                  placeholder="Специальность / направление"
+                  value={createForm.direction}
+                  onChange={(e) => setCreateForm({...createForm, direction: e.target.value})}
+                />
+              </div>
             </div>
-            
+
             <div className="create-actions">
               <button onClick={handleCancelCreate} className="cancel-button">
                 Отмена
               </button>
               <button onClick={handleCreateUser} className="create-button">
                 Создать
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно смены пароля */}
+      {passwordUser && (
+        <div className="password-modal">
+          <div className="password-modal-content">
+            <h3>Сменить пароль</h3>
+            <p className="password-modal-user">
+              Пользователь: <strong>{getUserDisplayName(passwordUser)}</strong>
+            </p>
+            <div className="password-form">
+              <div className="form-group">
+                <label>Новый пароль:</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Не менее 6 символов"
+                  autoComplete="new-password"
+                />
+              </div>
+              <div className="form-group">
+                <label>Подтвердите пароль:</label>
+                <input
+                  type="password"
+                  value={newPasswordConfirm}
+                  onChange={(e) => setNewPasswordConfirm(e.target.value)}
+                  placeholder="Повторите пароль"
+                  autoComplete="new-password"
+                />
+              </div>
+              {passwordError && (
+                <div className="password-error">{passwordError}</div>
+              )}
+            </div>
+            <div className="password-actions">
+              <button onClick={handleCancelChangePassword} className="cancel-button">
+                Отмена
+              </button>
+              <button onClick={handleChangePassword} className="save-button">
+                Сохранить пароль
               </button>
             </div>
           </div>

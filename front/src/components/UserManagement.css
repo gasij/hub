@@ -12,7 +12,7 @@
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--border);
 }
 
 .header-actions {
@@ -23,13 +23,9 @@
 
 .user-management-header h2 {
   margin: 0;
-  color: #e0e0e0;
+  color: var(--text);
   font-size: 28px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+  font-weight: 600;
 }
 
 .user-stats {
@@ -41,17 +37,16 @@
   text-align: center;
 }
 
-.stat-number {
+.user-management .stat-number {
   display: block;
   font-size: 24px;
   font-weight: bold;
-  color: #667eea;
-  text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+  color: var(--primary);
 }
 
-.stat-label {
+.user-management .stat-label {
   font-size: 14px;
-  color: #b0b0b0;
+  color: var(--text-muted);
 }
 
 .search-section {
@@ -70,53 +65,55 @@
 .search-input {
   flex: 1;
   padding: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: rgba(40, 40, 40, 0.8);
-  color: #e0e0e0;
+  border: 2px solid var(--input-border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
   font-size: 16px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  background: rgba(50, 50, 50, 0.8);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
 }
 
 .search-input::placeholder {
-  color: #888;
+  color: var(--text-muted-2);
 }
 
 .search-button,
 .refresh-button {
   padding: 12px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.25s ease;
 }
 
 .search-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--primary);
+  color: var(--bg-elevated);
 }
 
 .refresh-button {
-  background: rgba(40, 40, 40, 0.8);
-  color: #e0e0e0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 .search-button:hover,
 .refresh-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px var(--shadow-md);
+}
+
+.refresh-button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .users-list {
@@ -126,13 +123,12 @@
 }
 
 .user-card {
-  background: rgba(30, 30, 30, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: 14px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px var(--shadow);
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
 }
@@ -144,19 +140,19 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  background: var(--primary);
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px var(--shadow-md);
+  border-color: var(--primary-soft);
 }
 
 .user-card:hover::before {
   transform: scaleX(1);
-}
-
-.user-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.2);
-  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .user-info {
@@ -166,18 +162,18 @@
 .user-name {
   font-size: 18px;
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--text);
   margin-bottom: 5px;
 }
 
 .user-email {
-  color: #b0b0b0;
+  color: var(--text-muted);
   font-size: 14px;
   margin-bottom: 5px;
 }
 
 .user-group {
-  color: #888;
+  color: var(--text-muted-2);
   font-size: 14px;
   font-style: italic;
   margin-bottom: 5px;
@@ -185,7 +181,7 @@
 
 .user-dates {
   font-size: 12px;
-  color: #888;
+  color: var(--text-muted-2);
 }
 
 .user-actions {
@@ -201,7 +197,7 @@
 }
 
 .user-role {
-  color: white;
+  color: var(--bg-elevated);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 12px;
@@ -210,277 +206,127 @@
 }
 
 .edit-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--primary);
+  color: var(--bg-elevated);
   border: none;
   padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.edit-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.edit-button:hover::before {
-  left: 100%;
+  transition: all 0.25s ease;
 }
 
 .edit-button:hover {
+  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.password-button {
+  background: var(--text-muted);
+  color: var(--bg-elevated);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.password-button:hover {
+  background: var(--primary);
+  color: var(--bg-elevated);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-md);
 }
 
 .create-user-button {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  color: white;
+  background: var(--success);
+  color: var(--bg-elevated);
   border: none;
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.create-user-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.create-user-button:hover::before {
-  left: 100%;
+  transition: all 0.25s ease;
 }
 
 .create-user-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+  box-shadow: 0 6px 16px var(--shadow-md);
 }
 
 .delete-button {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-  color: white;
+  background: var(--error);
+  color: var(--bg-elevated);
   border: none;
   padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.25s ease;
 }
 
 .delete-button:disabled {
-  background: #6c757d;
+  background: var(--text-muted);
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-.delete-button:not(:disabled)::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.delete-button:not(:disabled):hover::before {
-  left: 100%;
-}
-
 .delete-button:not(:disabled):hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-md);
 }
 
-.loading, .error, .empty-state {
+.loading,
+.error,
+.empty-state {
   text-align: center;
   padding: 40px;
   font-size: 18px;
-  color: #b0b0b0;
+  color: var(--text-muted);
 }
 
 .error {
-  color: #ff6b6b;
+  color: var(--error);
 }
 
 .retry-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--primary);
+  color: var(--bg-elevated);
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   margin-top: 15px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .retry-button:hover {
+  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px var(--shadow-md);
 }
 
 .access-denied {
   text-align: center;
   padding: 60px 20px;
-  background: rgba(30, 30, 30, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
 }
 
 .access-denied h2 {
-  color: #ff6b6b;
+  color: var(--error);
   margin-bottom: 15px;
 }
 
 .access-denied p {
-  color: #b0b0b0;
+  color: var(--text-muted);
 }
 
-.edit-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.edit-modal-content {
-  background: rgba(30, 30, 30, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 30px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 90%;
-  max-width: 500px;
-  position: relative;
-  overflow: hidden;
-}
-
-.edit-modal-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
-}
-
-.edit-modal-content h3 {
-  color: #e0e0e0;
-  margin-bottom: 20px;
-  text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.edit-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.edit-form .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.edit-form label {
-  color: #e0e0e0;
-  font-weight: 500;
-}
-
-.edit-form input,
-.edit-form select {
-  padding: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: rgba(40, 40, 40, 0.8);
-  color: #e0e0e0;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.edit-form input:focus,
-.edit-form select:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  background: rgba(50, 50, 50, 0.8);
-}
-
-.edit-actions {
-  display: flex;
-  gap: 15px;
-  justify-content: flex-end;
-}
-
-.cancel-button,
-.save-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.cancel-button {
-  background: rgba(108, 117, 125, 0.8);
-  color: white;
-  border: 1px solid rgba(108, 117, 125, 0.3);
-}
-
-.cancel-button:hover {
-  background: rgba(90, 98, 104, 0.9);
-  transform: translateY(-2px);
-}
-
-.save-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.save-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-/* Модальные окна */
+.edit-modal,
 .create-modal,
 .delete-modal {
   position: fixed;
@@ -488,26 +334,28 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--overlay);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
+.edit-modal-content,
 .create-modal-content,
 .delete-modal-content {
-  background: rgba(30, 30, 30, 0.95);
-  backdrop-filter: blur(10px);
+  background: var(--bg-card);
   padding: 30px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  border: 1px solid var(--border);
   width: 90%;
   max-width: 500px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 16px 48px var(--shadow-md);
 }
 
+.edit-modal-content::before,
 .create-modal-content::before,
 .delete-modal-content::before {
   content: '';
@@ -516,20 +364,19 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  background: var(--primary);
 }
 
+.edit-modal-content h3,
 .create-modal-content h3,
 .delete-modal-content h3 {
-  color: #e0e0e0;
+  color: var(--text);
   margin-bottom: 20px;
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-weight: 600;
 }
 
+.edit-form,
 .create-form {
   display: flex;
   flex-direction: column;
@@ -537,36 +384,42 @@
   margin-bottom: 20px;
 }
 
+.edit-form .form-group,
 .create-form .form-group {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
+.edit-form label,
 .create-form label {
-  color: #e0e0e0;
+  color: var(--text);
   font-weight: 500;
 }
 
+.edit-form input,
+.edit-form select,
 .create-form input,
 .create-form select {
   padding: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: rgba(40, 40, 40, 0.8);
-  color: #e0e0e0;
+  border: 2px solid var(--input-border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
+.edit-form input:focus,
+.edit-form select:focus,
 .create-form input:focus,
 .create-form select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  background: rgba(50, 50, 50, 0.8);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-soft);
 }
 
+.edit-actions,
 .create-actions,
 .delete-actions {
   display: flex;
@@ -574,48 +427,177 @@
   justify-content: flex-end;
 }
 
-.create-button {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  color: white;
-  border: none;
+.edit-modal .cancel-button,
+.edit-modal .save-button,
+.create-modal .cancel-button,
+.create-modal .save-button,
+.delete-modal .cancel-button,
+.delete-modal .confirm-delete-button {
   padding: 10px 20px;
-  border-radius: 8px;
+  border: none;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+}
+
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--overlay);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.password-modal-content {
+  background: var(--bg-card);
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 48px var(--shadow-md);
+}
+
+.password-modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+
+.password-modal-content h3 {
+  color: var(--text);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.password-modal-user {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.password-form .form-group label {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.password-form input {
+  padding: 10px;
+  border: 2px solid var(--input-border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.password-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.password-error {
+  color: var(--error);
+  font-size: 14px;
+  margin-top: -8px;
+}
+
+.password-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.edit-modal .cancel-button,
+.create-modal .cancel-button,
+.delete-modal .cancel-button {
+  background: var(--text-muted);
+  color: var(--bg-elevated);
+}
+
+.edit-modal .cancel-button:hover,
+.create-modal .cancel-button:hover,
+.delete-modal .cancel-button:hover {
+  background: var(--text-muted-2);
+  transform: translateY(-2px);
+}
+
+.edit-modal .save-button,
+.create-modal .save-button {
+  background: var(--primary);
+  color: var(--bg-elevated);
+}
+
+.edit-modal .save-button:hover,
+.create-modal .save-button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.create-button {
+  background: var(--success);
+  color: var(--bg-elevated);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .create-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-md);
 }
 
 .confirm-delete-button {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-  color: white;
+  background: var(--error);
+  color: var(--bg-elevated);
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .confirm-delete-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-md);
 }
 
 .delete-modal-content p {
-  color: #b0b0b0;
+  color: var(--text-muted);
   margin-bottom: 15px;
   text-align: center;
 }
 
 .warning-text {
-  color: #ff6b6b !important;
+  color: var(--error) !important;
   font-weight: 500;
 }
 
@@ -625,40 +607,40 @@
     align-items: flex-start;
     gap: 15px;
   }
-  
+
   .header-actions {
     flex-direction: column;
     align-items: stretch;
     gap: 15px;
   }
-  
+
   .user-stats {
     align-self: stretch;
     justify-content: space-around;
   }
-  
+
   .search-section {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .search-form {
     flex-direction: column;
   }
-  
+
   .users-list {
     grid-template-columns: 1fr;
   }
-  
+
   .user-actions {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .action-buttons {
     flex-direction: column;
   }
-  
+
   .edit-actions,
   .create-actions,
   .delete-actions {

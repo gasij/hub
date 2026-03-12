@@ -32,9 +32,6 @@ const HomePage = () => {
           
           {isAuthenticated ? (
             <div className="authenticated-section">
-              <p className="welcome-message">
-                Добро пожаловать, {user?.firstName}!
-              </p>
               <div className="action-buttons">
                 <button 
                   onClick={() => navigate('/dashboard')}

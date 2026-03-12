@@ -46,7 +46,7 @@ psql -U postgres -f quick-init.sql
 ## Тестовые данные
 
 ### Администраторы
-- **admin@university.ru** / **admin123**
+- *** /admin@university.ru* **admin123**
 - **director@university.ru** / **director123**
 
 ### Студенты

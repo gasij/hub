@@ -1,24 +1,17 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { useNavigate, Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
-  };
-
-  const getUserDisplayName = () => {
-    if (!user) return '';
-    const parts = [user.lastName, user.firstName];
-    if (user.patronymic) {
-      parts.push(user.patronymic);
-    }
-    return parts.join(' ');
   };
 
   if (!isAuthenticated) {
@@ -38,6 +31,9 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-user">
+            <button type="button" className="theme-switch" onClick={toggleTheme} role="switch" aria-label="Переключить тему" aria-checked={theme === 'dark'} title={theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}>
+              <span className="theme-switch-slider" data-theme={theme} aria-hidden />
+            </button>
             <Link to="/login" className="navbar-link">
               Войти
             </Link>
@@ -74,6 +70,9 @@ const Navbar = () => {
         </div>
 
             <div className="navbar-user">
+              <button type="button" className="theme-switch" onClick={toggleTheme} role="switch" aria-label="Переключить тему" aria-checked={theme === 'dark'} title={theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}>
+                <span className="theme-switch-slider" data-theme={theme} aria-hidden />
+              </button>
               <Link to="/profile" className="navbar-link profile-button">
                 Профиль
               </Link>

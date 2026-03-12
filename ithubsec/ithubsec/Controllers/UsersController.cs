@@ -34,6 +34,9 @@ namespace ithubsec.Controllers
                     Patronymic = u.Patronymic,
                     Role = u.Role,
                     GroupName = u.GroupName,
+                    BirthDate = u.BirthDate,
+                    Course = u.Course,
+                    Direction = u.Direction,
                     CreatedAt = u.CreatedAt
                 })
                 .OrderBy(u => u.LastName)
@@ -91,6 +94,9 @@ namespace ithubsec.Controllers
             user.Patronymic = request.Patronymic;
             user.Role = request.Role;
             user.GroupName = request.GroupName;
+            user.BirthDate = request.BirthDate;
+            user.Course = request.Course;
+            user.Direction = request.Direction;
             user.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
@@ -104,6 +110,9 @@ namespace ithubsec.Controllers
                 Patronymic = user.Patronymic,
                 Role = user.Role,
                 GroupName = user.GroupName,
+                BirthDate = user.BirthDate,
+                Course = user.Course,
+                Direction = user.Direction,
                 CreatedAt = user.CreatedAt
             };
 
@@ -155,6 +164,9 @@ namespace ithubsec.Controllers
                 Patronymic = request.Patronymic,
                 Role = request.Role,
                 GroupName = request.GroupName,
+                BirthDate = request.BirthDate,
+                Course = request.Course,
+                Direction = request.Direction,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -171,12 +183,31 @@ namespace ithubsec.Controllers
                 Patronymic = user.Patronymic,
                 Role = user.Role,
                 GroupName = user.GroupName,
+                BirthDate = user.BirthDate,
+                Course = user.Course,
+                Direction = user.Direction,
                 CreatedAt = user.CreatedAt
             };
 
             return CreatedAtAction(nameof(GetAllUsers), new { id = user.Id }, userDto);
         }
 
+        [HttpPut("{id}/password")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> ChangeUserPassword(Guid id, ChangePasswordRequest request)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            user.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         private Guid GetCurrentUserId()
         {

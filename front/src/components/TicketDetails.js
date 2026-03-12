@@ -134,9 +134,8 @@ const TicketDetails = () => {
   const handleDownloadDocument = async (documentId, ticketId) => {
     try {
       setDownloadingDocument(documentId);
-      const blob = await documentService.getDocument(documentId);
-      // Получаем имя файла из заголовка ответа или используем дефолтное
-      const fileName = `document_${ticketId}.docx`;
+      const { blob, fileName: nameFromServer } = await documentService.getDocument(documentId);
+      const fileName = nameFromServer || `document_${ticketId}`;
       documentService.downloadDocument(blob, fileName);
     } catch (error) {
       console.error('Error downloading document:', error);
